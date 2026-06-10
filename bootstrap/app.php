@@ -1,0 +1,24 @@
+<?php
+
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        api: __DIR__.'/../routes/api.php',
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'geoip.redirect' => \App\Http\Middleware\GeoIpRedirectMiddleware::class,
+            'set.locale' => \App\Http\Middleware\SetLocaleFromRouteMiddleware::class,
+            'role' => \App\Http\Middleware\EnsureUserRoleMiddleware::class,
+            'audit' => \App\Http\Middleware\AuditLogMiddleware::class,
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        //
+    })->create();
