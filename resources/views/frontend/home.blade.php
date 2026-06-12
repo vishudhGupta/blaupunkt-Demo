@@ -2,10 +2,26 @@
 
 @section('content')
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem; border-radius: 8px; margin-bottom: 3rem; text-align: center;">
-        <h1 style="color: white; margin-bottom: 1rem; font-size: 2.5rem;">Welcome to Blaupunkt</h1>
-        <p style="font-size: 1.1rem;">Multi-country and multi-language storefront</p>
+        <h1 style="color: white; margin-bottom: 1rem; font-size: 2.5rem;">{{ $pageContent['title'] ?? 'Welcome to Blaupunkt' }}</h1>
+        <p style="font-size: 1.1rem;">{{ $pageContent['subtitle'] ?? 'Multi-country and multi-language storefront' }}</p>
         <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.9;">You are viewing content for: <strong>{{ $locale }}</strong></p>
     </div>
+
+    <section style="background: #f5f7fb; padding: 2rem; border-radius: 8px; margin-bottom: 3rem; border: 1px solid #e5e7eb;">
+        <h2 style="margin-bottom: 1rem;">{{ $pageContent['title'] ?? 'Country Overview' }}</h2>
+
+        @foreach(($pageContent['paragraphs'] ?? []) as $paragraph)
+            <p style="margin-bottom: 1rem; color: #444; line-height: 1.8;">{{ $paragraph }}</p>
+        @endforeach
+
+        @if(! empty($pageContent['highlights'] ?? []))
+            <ul style="margin-left: 1.5rem; line-height: 1.8; color: #444;">
+                @foreach($pageContent['highlights'] as $highlight)
+                    <li>{{ $highlight }}</li>
+                @endforeach
+            </ul>
+        @endif
+    </section>
 
     <section style="margin-bottom: 3rem;">
         <h2 style="margin-bottom: 1.5rem;">Featured Products</h2>

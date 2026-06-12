@@ -17,6 +17,8 @@ class FrontendController extends Controller
     public function home(string $locale, HreflangService $hreflangService): View
     {
         $currentLocale = Locale::where('code', $locale)->firstOrFail();
+        $defaultCountryPage = config('country_pages.default', 'eu-en');
+        $pageContent = config('country_pages.' . $locale, config('country_pages.' . $defaultCountryPage, []));
         
         // Get products available in this market
         $products = ProductTranslation::query()
@@ -29,6 +31,7 @@ class FrontendController extends Controller
         return view('frontend.home', [
             'locale' => $locale,
             'products' => $products,
+            'pageContent' => $pageContent,
             'hreflang' => $hreflangService->forPath('/'),
         ]);
     }
